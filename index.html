@@ -328,7 +328,9 @@
     </style>
 </head>
 <body>
-    <audio id="bgMusic" src="mu.mp3" autoplay loop></audio>
+    <audio id="bg-music" loop>
+    <source src="mu.mp3" type="audio/mp3">
+    </audio>
     <!-- Hero Header -->
     <header>
         <h1>Happy Sisters' Day!</h1>
@@ -417,10 +419,12 @@
             const btn = document.getElementById('openBtn');
             const overlay = document.getElementById('letterOverlay');
             const music = document.getElementById('bgMusic');
-            // Play background audio seamlessly on click (bypasses browser autoplay blocks)
-            music.play().catch(error => {
-                console.log("Audio playback error:", error);
-            });
+            if (music) {
+                music.play().catch(error => {
+                    console.log("Audio playback error:", error);
+                });
+            }
+           
             scene.classList.add('opened');
             btn.classList.add('hidden');
             

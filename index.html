@@ -328,7 +328,7 @@
     </style>
 </head>
 <body>
-    <audio src="mu.mp3" autoplay loop></audio>
+    <audio id="bgMusic" src="mu.mp3" autoplay loop></audio>
     <!-- Hero Header -->
     <header>
         <h1>Happy Sisters' Day!</h1>
@@ -459,7 +459,13 @@
                 display.style.opacity = 1;
             }, 200);
         }
-
+       window.addEventListener('DOMContentLoaded', () => {
+        const music = document.getElementById('bgMusic');
+        music.muted = false; // Unmute immediately
+        music.play().catch(error => {
+            console.log("Browser blocked direct autoplay. It will play on the first click instead.");
+        });
+    });
         document.getElementById('reason-display').style.transition = 'opacity 0.2s ease-in-out';
     </script>
 </body>

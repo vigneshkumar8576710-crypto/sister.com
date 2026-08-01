@@ -416,7 +416,11 @@
             const scene = document.getElementById('envelopeScene');
             const btn = document.getElementById('openBtn');
             const overlay = document.getElementById('letterOverlay');
-            
+            const music = document.getElementById('bgMusic');
+            // Play background audio seamlessly on click (bypasses browser autoplay blocks)
+            music.play().catch(error => {
+                console.log("Audio playback error:", error);
+            });
             scene.classList.add('opened');
             btn.classList.add('hidden');
             

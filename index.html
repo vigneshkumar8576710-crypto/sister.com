@@ -542,11 +542,12 @@
             introOverlay.classList.add('hidden');
 
             // Start the music now, inside a real user click, so browsers allow it
-            if (music) {
-                music.play().catch(error => {
-                    console.log("Audio playback error:", error);
-                });
-            }
+       if (music) {
+               music.volume = 0.75; // reduces volume by 25%
+               music.play().catch(error => {
+            console.log("Audio playback error:", error);
+            });
+          }
         });
     </script>
 </body>

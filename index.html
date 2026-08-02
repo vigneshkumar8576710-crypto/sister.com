@@ -27,6 +27,63 @@
             
         }
 
+        /* ---------------- INTRO / CONSENT PAGE ---------------- */
+        .intro-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(135deg, #ff6584, #ffb1c1);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px;
+            color: var(--white);
+            transition: opacity 0.6s ease-in-out, visibility 0.6s;
+        }
+
+        .intro-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .intro-icon { font-size: 3rem; margin-bottom: 20px; }
+
+        .intro-overlay h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .intro-overlay p {
+            font-size: 1.05rem;
+            max-width: 480px;
+            margin-bottom: 30px;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .intro-continue-btn {
+            background-color: var(--white);
+            color: var(--primary-color);
+            padding: 14px 36px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .intro-continue-btn:hover { transform: translateY(-3px); }
+
+        /* Hide site content until consent is given */
+        .site-content { display: none; }
+        .site-content.visible { display: block; }
+
         /* Hero Section */
         header {
             height: 100vh;
@@ -331,6 +388,16 @@
     <audio id="bg-music" loop>
     <source src="mu.webm" type="audio/webm">
     </audio>
+
+    <!-- INTRO / CONSENT PAGE -->
+    <div class="intro-overlay" id="introOverlay">
+        <div class="intro-icon">🎧</div>
+        <h2>Before You Begin</h2>
+        <p>This experience is best enjoyed with headphones on, or somewhere quiet where you're alone. Turn your volume up, and when you're ready, click continue.</p>
+        <button class="intro-continue-btn" id="introContinueBtn">Continue ✨</button>
+    </div>
+
+    <div class="site-content" id="siteContent">
     <!-- Hero Header -->
     <header>
         <h1>Happy Sisters' Day!</h1>
@@ -411,6 +478,7 @@
     <footer>
         <p>Made with ❤️ just for you. Happy Sisters' Day!</p>
     </footer>
+    </div>
 
     <!-- JavaScript -->
     <script>
@@ -418,13 +486,7 @@
             const scene = document.getElementById('envelopeScene');
             const btn = document.getElementById('openBtn');
             const overlay = document.getElementById('letterOverlay');
-            const music = document.getElementById('bgMusic');
-            if (music) {
-                music.play().catch(error => {
-                    console.log("Audio playback error:", error);
-                });
-            }
-           
+
             scene.classList.add('opened');
             btn.classList.add('hidden');
             
@@ -467,14 +529,25 @@
                 display.style.opacity = 1;
             }, 200);
         }
-       window.addEventListener('DOMContentLoaded', () => {
-        const music = document.getElementById('bgMusic');
-        music.muted = false; // Unmute immediately
-        music.play().catch(error => {
-            console.log("Browser blocked direct autoplay. It will play on the first click instead.");
-        });
-    });
         document.getElementById('reason-display').style.transition = 'opacity 0.2s ease-in-out';
+
+        // ---- Intro / consent page logic ----
+        document.getElementById('introContinueBtn').addEventListener('click', () => {
+            const introOverlay = document.getElementById('introOverlay');
+            const siteContent = document.getElementById('siteContent');
+            const music = document.getElementById('bg-music');
+
+            // Reveal the site
+            siteContent.classList.add('visible');
+            introOverlay.classList.add('hidden');
+
+            // Start the music now, inside a real user click, so browsers allow it
+            if (music) {
+                music.play().catch(error => {
+                    console.log("Audio playback error:", error);
+                });
+            }
+        });
     </script>
 </body>
 </html>
